@@ -5,6 +5,7 @@
 #include"Actions/AddHexaAction.h"
 #include"Actions/AddTriAction.h"
 #include"Actions/SelectOneAction.h"
+#include"Actions/DeleteAction.h"
 
 
 //Constructor
@@ -14,6 +15,7 @@ ApplicationManager::ApplicationManager()
 	pOut = new Output;
 	pIn = pOut->CreateInput();
 	
+	SelectedFig = NULL;
 	FigCount = 0;
 		
 	//Create an array of figure pointers and set them to NULL		
@@ -56,6 +58,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case SELECT:
 			pAct = new SelectOneAction(this);
 			break;
+			case DELET:
+				pAct = new DeleteAction(this);
+				break;
+
+
 
 
 		case EXIT:
@@ -130,4 +137,32 @@ ApplicationManager::~ApplicationManager()
 	delete pIn;
 	delete pOut;
 	
+}
+
+void ApplicationManager::SetSelectedFig(CFigure* F)
+{
+	SelectedFig = F;
+}
+
+CFigure* ApplicationManager::GetSelectedFig()
+{
+	return SelectedFig;
+}
+
+void ApplicationManager::del()
+{
+	if (SelectedFig != NULL)
+	{
+		for (int i = 0; i < FigCount; i++)
+		{
+			if ((FigList[i]) == SelectedFig)
+			{
+				SelectedFig = NULL;
+				FigList[i] = FigList[FigCount - 1];
+				FigList[FigCount - 1] = NULL;
+				FigCount--;
+				break;
+			}
+		}
+	}
 }

@@ -6,7 +6,6 @@ class SelectOneAction :public Action
 {
 private:
 	Point P1;
-	bool IsSelected;
 public:
 	SelectOneAction(ApplicationManager* pApp);
 	virtual void ReadActionParameters();
