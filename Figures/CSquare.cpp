@@ -16,3 +16,13 @@ bool CSquare::Belong(int x1, int y1)
 		return false;
 	return true;
 }
+
+void CSquare::PrintInfo(Output* pOut)
+{
+	pOut->PrintMessage("square_ID:"+to_string(ID)+" center:"+to_string(Center.x)+" "+to_string(Center.y));
+}
+
+void CSquare::Set_ID(int id)
+{
+	ID = id;
+}

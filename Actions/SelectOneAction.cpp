@@ -19,15 +19,27 @@ void SelectOneAction::ReadActionParameters()
 }
 void SelectOneAction::Execute()
 {
+	Output* pOut = pManager->GetOutput();
 	ReadActionParameters();
-	CFigure* T=pManager->GetFigure(P1.x, P1.y);
-	if (T != NULL&&(T->IsSelected() == 0))
+	CFigure* FIG=pManager->GetFigure(P1.x, P1.y);
+	if (FIG != NULL&&(FIG->IsSelected() == 0))
 	{
-		T->SetSelected(1);
+		if (pManager->GetSelectedFig() != NULL)
+		{
+			(pManager->GetSelectedFig())->SetSelected(0);
+		}
+		pManager->SetSelectedFig(FIG);
+
+		FIG->SetSelected(1);
+		FIG->PrintInfo(pOut);
 	}
-	else if (T != NULL && (T->IsSelected()==1))
+	else if (FIG != NULL && (FIG->IsSelected()==1)) //unselect figure
 	{
-		T->SetSelected(0);
+		FIG->SetSelected(0);
+		pManager->SetSelectedFig(NULL);
+		Output* pOut = pManager->GetOutput();
+		pOut->ClearStatusBar();
+		
 	}
 
 }

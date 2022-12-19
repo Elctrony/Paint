@@ -39,3 +39,13 @@ bool CHexagon::Belong(int x1, int y1)
 	}
 	return false;
 }
+void CHexagon::PrintInfo(Output* pOut)
+{
+	pOut->PrintMessage("hexagon_ID:"+to_string(ID)+" Center:" + to_string(Center.x) + " " + to_string(Center.y));
+
+}
+
+void CHexagon::Set_ID(int id)
+{
+	ID = id;
+}

@@ -5,6 +5,7 @@
 #include"Actions/AddHexaAction.h"
 #include"Actions/AddTriAction.h"
 #include"Actions/SelectOneAction.h"
+#include"Actions/DeleteAction.h"
 
 
 //Constructor
@@ -14,6 +15,8 @@ ApplicationManager::ApplicationManager()
 	pOut = new Output;
 	pIn = pOut->CreateInput();
 	
+	SelectedFig = NULL;
+	Count = 0;
 	FigCount = 0;
 		
 	//Create an array of figure pointers and set them to NULL		
@@ -56,6 +59,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case SELECT:
 			pAct = new SelectOneAction(this);
 			break;
+			case DELET:
+				pAct = new DeleteAction(this);
+				break;
+
+
 
 
 		case EXIT:
@@ -82,8 +90,12 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 //Add a figure to the list of figures
 void ApplicationManager::AddFigure(CFigure* pFig)
 {
-	if(FigCount < MaxFigCount )
-		FigList[FigCount++] = pFig;	
+	if (FigCount < MaxFigCount)
+	{
+		Count++;
+		FigList[FigCount++] = pFig;
+		FigList[FigCount - 1]->Set_ID(Count);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////
 CFigure *ApplicationManager::GetFigure(int x, int y) const
@@ -130,4 +142,34 @@ ApplicationManager::~ApplicationManager()
 	delete pIn;
 	delete pOut;
 	
+}
+
+void ApplicationManager::SetSelectedFig(CFigure* F)
+{
+	SelectedFig = F;
+}
+
+CFigure* ApplicationManager::GetSelectedFig()
+{
+	return SelectedFig;
+}
+
+void ApplicationManager::del()
+{
+	if (SelectedFig != NULL)
+	{
+		for (int i = 0; i < FigCount; i++)
+		{
+			if ((FigList[i]) == SelectedFig)
+			{
+				delete SelectedFig;
+				SelectedFig = NULL;
+				pOut->ClearStatusBar();
+				FigList[i] = FigList[FigCount - 1];
+				FigList[FigCount - 1] = NULL;
+				FigCount--;
+				break;
+			}
+		}
+	}
 }

@@ -132,6 +132,7 @@
     <ClCompile Include="Actions\AddTriAction.cpp" />
     <ClCompile Include="Actions\AddHexaAction.cpp" />
     <ClCompile Include="Actions\AddSqrAction.cpp" />
+    <ClCompile Include="Actions\DeleteAction.cpp" />
     <ClCompile Include="Figures\CHexagon.cpp" />
     <ClCompile Include="Figures\CTriangle.cpp" />
     <ClCompile Include="Figures\CSquare.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Actions\AddTriAction.h" />
     <ClInclude Include="Actions\AddHexaAction.h" />
     <ClInclude Include="Actions\AddSqrAction.h" />
+    <ClInclude Include="Actions\DeleteAction.h" />
     <ClInclude Include="Figures\CHexagon.h" />
     <ClInclude Include="Figures\CTriangle.h" />
     <ClInclude Include="Figures\CSquare.h" />

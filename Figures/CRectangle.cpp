@@ -34,3 +34,13 @@ bool CRectangle::Belong(int x1, int y1)
 	}
 	return true;
 }
+
+void CRectangle::PrintInfo(Output* pOut)
+{
+	pOut->PrintMessage("rectangle_ID:"+to_string(ID)+" corner1:"+to_string(Corner1.x)+" "+to_string(Corner1.y));
+}
+
+void CRectangle::Set_ID(int id)
+{
+	ID = id;
+}

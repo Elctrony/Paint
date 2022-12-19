@@ -16,6 +16,7 @@ private:
 	CFigure* FigList[MaxFigCount];	//List of all figures (Array of pointers)
 
 	CFigure* SelectedFig; //Pointer to the selected figure
+	int Count;
 
 	//Pointers to Input and Output classes
 	Input *pIn;
@@ -24,6 +25,9 @@ private:
 public:	
 	ApplicationManager(); 
 	~ApplicationManager();
+	void SetSelectedFig(CFigure* F);
+	CFigure* GetSelectedFig();
+	void del();
 	
 	// -- Action-Related Functions
 	//Reads the input command from the user and returns the corresponding action type
