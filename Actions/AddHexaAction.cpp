@@ -18,7 +18,13 @@ void AddHexaAction::ReadActionParameters()
 	pOut->PrintMessage("New Hexagon: Click at center");
 
 	//Read center and store in point P1
-	pIn->GetPointClicked(P1.x, P1.y);
+	do
+	{
+		pIn->GetPointClicked(P1.x, P1.y);
+		if (P1.y - 25 * sqrt(3) < UI.ToolBarHeight)
+			pOut->PrintMessage("invalid point click again");
+
+	} while (P1.y-25*sqrt(3) < UI.ToolBarHeight);
 
 	HexaGfxInfo.isFilled = false;	//default is not filled
 	//get drawing, filling colors and pen width from the interface

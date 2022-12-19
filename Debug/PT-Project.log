@@ -1,6 +1,6 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  ApplicationManager.cpp
-  SelectOneAction.cpp
-  DeleteAction.cpp
+  AddTriAction.cpp
+  AddRectAction.cpp
+  AddCircAction.cpp
   Generating Code...
   PT-Project.vcxproj -> C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Debug\PT Project.exe

@@ -18,7 +18,13 @@ void AddSqrAction::ReadActionParameters()
 	pOut->PrintMessage("New Square: Click at center");
 
 	//Read center and store in point P1
-	pIn->GetPointClicked(P1.x, P1.y);
+	do
+	{
+		pIn->GetPointClicked(P1.x, P1.y);
+		if (P1.y-50<UI.ToolBarHeight)
+			pOut->PrintMessage("invalid point click again");
+
+	} while (P1.y-50 < UI.ToolBarHeight);
 
 
 	SqrGfxInfo.isFilled = false;	//default is not filled

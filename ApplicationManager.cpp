@@ -16,6 +16,7 @@ ApplicationManager::ApplicationManager()
 	pIn = pOut->CreateInput();
 	
 	SelectedFig = NULL;
+	Count = 0;
 	FigCount = 0;
 		
 	//Create an array of figure pointers and set them to NULL		
@@ -89,8 +90,12 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 //Add a figure to the list of figures
 void ApplicationManager::AddFigure(CFigure* pFig)
 {
-	if(FigCount < MaxFigCount )
-		FigList[FigCount++] = pFig;	
+	if (FigCount < MaxFigCount)
+	{
+		Count++;
+		FigList[FigCount++] = pFig;
+		FigList[FigCount - 1]->Set_ID(Count);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////
 CFigure *ApplicationManager::GetFigure(int x, int y) const
@@ -157,7 +162,9 @@ void ApplicationManager::del()
 		{
 			if ((FigList[i]) == SelectedFig)
 			{
+				delete SelectedFig;
 				SelectedFig = NULL;
+				pOut->ClearStatusBar();
 				FigList[i] = FigList[FigCount - 1];
 				FigList[FigCount - 1] = NULL;
 				FigCount--;
