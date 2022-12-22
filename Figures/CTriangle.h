@@ -16,6 +16,7 @@ public:
 	virtual bool Belong(int x1,int y1);
 	virtual void PrintInfo(Output* pOut);
 	virtual void Set_ID(int id);
+	virtual void shift(Point P);
 };
 
 #endif

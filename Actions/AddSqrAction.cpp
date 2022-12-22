@@ -21,10 +21,10 @@ void AddSqrAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P1.x, P1.y);
-		if (P1.y-50<UI.ToolBarHeight)
+		if (P1.y-50<UI.ToolBarHeight|| P1.y + 50> UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P1.y-50 < UI.ToolBarHeight);
+	} while (P1.y-50 < UI.ToolBarHeight|| P1.y+50>UI.height-UI.StatusBarHeight);
 
 
 	SqrGfxInfo.isFilled = false;	//default is not filled

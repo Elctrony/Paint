@@ -15,7 +15,6 @@ void DeleteAction::Execute()
 void DeleteAction::ReadActionParameters()
 {
 	Output* pOut = pManager->GetOutput();
-	Input* pIn = pManager->GetInput();
 	pOut->ClearDrawArea();
 	
 }

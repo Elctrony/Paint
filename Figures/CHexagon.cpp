@@ -49,3 +49,9 @@ void CHexagon::Set_ID(int id)
 {
 	ID = id;
 }
+
+void CHexagon::shift(Point P)
+{
+	Center.x = P.x;
+	Center.y = P.y;
+}

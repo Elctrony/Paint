@@ -21,10 +21,10 @@ void AddTriAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P1.x, P1.y);
-		if (P1.y <UI.ToolBarHeight)
+		if (P1.y <UI.ToolBarHeight|| P1.y>UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P1.y<UI.ToolBarHeight);
+	} while (P1.y<UI.ToolBarHeight|| P1.y>UI.height - UI.StatusBarHeight);
 
 	pOut->PrintMessage("New Triangle: Click at second corner");
 
@@ -32,10 +32,10 @@ void AddTriAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P2.x, P2.y);
-		if (P2.y< UI.ToolBarHeight)
+		if (P2.y< UI.ToolBarHeight|| P2.y>UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P2.y < UI.ToolBarHeight);
+	} while (P2.y < UI.ToolBarHeight||P2.y>UI.height - UI.StatusBarHeight);
 
 
 	pOut->PrintMessage("New Triangle: Click at third corner");
@@ -44,10 +44,10 @@ void AddTriAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P3.x, P3.y);
-		if (P3.y <UI.ToolBarHeight)
+		if (P3.y <UI.ToolBarHeight|| P3.y>UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P3.y < UI.ToolBarHeight);
+	} while (P3.y < UI.ToolBarHeight|| P3.y>UI.height - UI.StatusBarHeight);
 
 
 	TriGfxInfo.isFilled = false;	//default is not filled

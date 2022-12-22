@@ -39,3 +39,18 @@ void CTriangle::Set_ID(int id)
 {
 	ID = id;
 }
+
+void CTriangle::shift(Point P)
+{
+	double diff12x = Corner2.x - Corner1.x;
+	double diff13x = Corner3.x - Corner1.x;
+	double diff12y = Corner2.y - Corner1.y;
+	double diff13y = Corner3.y - Corner1.y;
+	Corner1 = P;
+	Corner2.x = Corner1.x + diff12x;
+	Corner2.y = Corner1.y +diff12y;
+	Corner3.x = Corner1.x + diff13x;
+	Corner3.y = Corner1.y + diff13y;
+
+	
+}

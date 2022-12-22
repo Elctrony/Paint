@@ -1,6 +1,7 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  AddTriAction.cpp
-  AddRectAction.cpp
-  AddCircAction.cpp
-  Generating Code...
+  CTriangle.cpp
+C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Figures\CTriangle.cpp(50,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Figures\CTriangle.cpp(51,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Figures\CTriangle.cpp(52,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Figures\CTriangle.cpp(53,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   PT-Project.vcxproj -> C:\Users\MM\Desktop\phase2\Phase2 - Code F22\Debug\PT Project.exe

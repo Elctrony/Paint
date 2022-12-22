@@ -21,10 +21,10 @@ void AddCircAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P1.x, P1.y);
-		if (P1.y < (UI.ToolBarHeight))
+		if (P1.y < (UI.ToolBarHeight) || P1.y>UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 		
-	} while (P1.y <(UI.ToolBarHeight));
+	} while (P1.y <(UI.ToolBarHeight) || P1.y>UI.height - UI.StatusBarHeight);
 
 	pOut->PrintMessage("New Circle: Click at point on circle");
 
@@ -32,10 +32,10 @@ void AddCircAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P2.x, P2.y);
-		if (P2.y < (UI.ToolBarHeight))
+		if (P2.y < (UI.ToolBarHeight) || P2.y>UI.height - UI.StatusBarHeight)
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P2.y < (UI.ToolBarHeight));
+	} while (P2.y < (UI.ToolBarHeight)||P2.y>UI.height-UI.StatusBarHeight);
 
 
 	CircGfxInfo.isFilled = false;	//default is not filled

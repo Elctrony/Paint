@@ -3,7 +3,7 @@ CCircle::CCircle(Point P1, Point P2, GfxInfo FigureGfxInfo) :CFigure(FigureGfxIn
 {
 	center = P1;
 	p2 = P2;
-	r = (center.x - p2.x) * (center.x - p2.x) + (center.y - p2.y) * (center.y - p2.y);
+	rsquare = (center.x - p2.x) * (center.x - p2.x) + (center.y - p2.y) * (center.y - p2.y);
 }
 
 
@@ -16,13 +16,13 @@ bool CCircle::Belong(int x1, int y1)
 {
 	double d = (center.x - x1) * (center.x - x1) + (center.y - y1) * (center.y - y1);
 	
-	if (d > r)
+	if (d > rsquare)
 		return false;
 	return true;
 }
 void CCircle::PrintInfo(Output* pOut) 
 {
-	pOut->PrintMessage("CIRCLE_ID: "+to_string(ID) + " Center:" + to_string(center.x) + " " + to_string(center.y) + " radius = " + to_string(r));
+	pOut->PrintMessage("CIRCLE_ID: "+to_string(ID) + " Center:" + to_string(center.x) + " " + to_string(center.y) + " radius = " + to_string(sqrt(rsquare)));
 
 
 }
@@ -31,3 +31,14 @@ void CCircle::Set_ID(int id)
 {
 	ID = id;
 }
+
+void CCircle::shift(Point P)
+{
+
+	center = P;
+	p2.x = center.x;
+	p2.y = center.y +sqrt(rsquare);
+
+}
+
+

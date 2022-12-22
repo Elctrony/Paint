@@ -35,8 +35,10 @@ public:
 	//virtual void Save(ofstream &OutFile) = 0;	//Save the figure parameters to the file
 	//virtual void Load(ifstream &Infile) = 0;	//Load the figure parameters to the file
 
-	virtual void PrintInfo(Output* pOut) = 0;
-	virtual void Set_ID(int id)=0;	//print all figure info on the status bar
+	virtual void PrintInfo(Output* pOut) = 0;//print all figure info on the status bar
+	virtual void Set_ID(int id)=0;	//set id of figure
+
+	virtual void shift(Point P);
 };
 
 #endif

@@ -21,10 +21,10 @@ void AddHexaAction::ReadActionParameters()
 	do
 	{
 		pIn->GetPointClicked(P1.x, P1.y);
-		if (P1.y - 25 * sqrt(3) < UI.ToolBarHeight)
+		if (P1.y - 25 * sqrt(3) < UI.ToolBarHeight || (P1.y + 25 * sqrt(3) > UI.height - UI.StatusBarHeight))
 			pOut->PrintMessage("invalid point click again");
 
-	} while (P1.y-25*sqrt(3) < UI.ToolBarHeight);
+	} while (P1.y-25*sqrt(3) < UI.ToolBarHeight|| (P1.y+25 * sqrt(3) > UI.height-UI.StatusBarHeight));//check if point is out of boundaries
 
 	HexaGfxInfo.isFilled = false;	//default is not filled
 	//get drawing, filling colors and pen width from the interface

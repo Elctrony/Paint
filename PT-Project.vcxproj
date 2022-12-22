@@ -181,6 +181,7 @@
     <ClCompile Include="ApplicationManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Actions\SelectOneAction.cpp" />
+    <ClCompile Include="Actions\MoveAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actions\AddCircAction.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="DEFS.h" />
     <ClInclude Include="Actions\SelectOneAction.h" />
+    <ClInclude Include="Actions\MoveAction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

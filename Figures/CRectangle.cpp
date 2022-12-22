@@ -4,6 +4,8 @@ CRectangle::CRectangle(Point P1, Point P2, GfxInfo FigureGfxInfo):CFigure(Figure
 {
 	Corner1 = P1;
 	Corner2 = P2;
+	length = abs(P1.y - P2.y);
+	width = abs(P1.x - P2.x);
 }
 	
 
@@ -43,4 +45,28 @@ void CRectangle::PrintInfo(Output* pOut)
 void CRectangle::Set_ID(int id)
 {
 	ID = id;
+}
+void CRectangle:: shift(Point P)
+{
+	if (Corner1.x > Corner2.x) 
+	{
+		Corner1.x = P.x + (width / 2);
+		Corner2.x = P.x - (width / 2);
+	}
+	else if (Corner1.x < Corner2.x)
+	{
+		Corner2.x = P.x + (width / 2);
+		Corner1.x = P.x - (width / 2);
+    }
+	if (Corner1.y > Corner2.y)
+	{
+		Corner1.y = P.y + (length / 2);
+		Corner2.y = P.y - (length / 2);
+	}
+	else if (Corner1.y < Corner2.y)
+	{
+		Corner2.y = P.y + (length / 2);
+		Corner1.y = P.y - (length / 2);
+	}
+
 }

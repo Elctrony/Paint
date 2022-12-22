@@ -26,3 +26,8 @@ void CSquare::Set_ID(int id)
 {
 	ID = id;
 }
+
+void CSquare::shift(Point P)
+{
+	Center = P;
+}

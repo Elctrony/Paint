@@ -9,7 +9,7 @@ class CCircle:public CFigure
 private:
 	Point center;
 	Point p2;
-	double r;
+	double rsquare;
 	int ID;
 public:
 	CCircle(Point, Point, GfxInfo FigureGfxInfo);
@@ -17,6 +17,7 @@ public:
 	virtual bool Belong(int x1, int y1);
 	virtual void PrintInfo(Output* pOut);
 	virtual void Set_ID(int id);
+	virtual void shift(Point P);
 };
 #endif
 

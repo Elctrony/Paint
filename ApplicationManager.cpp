@@ -6,6 +6,7 @@
 #include"Actions/AddTriAction.h"
 #include"Actions/SelectOneAction.h"
 #include"Actions/DeleteAction.h"
+#include"Actions/MoveAction.h"
 
 
 //Constructor
@@ -59,8 +60,12 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case SELECT:
 			pAct = new SelectOneAction(this);
 			break;
-			case DELET:
-				pAct = new DeleteAction(this);
+
+	   case DELET:
+		    pAct = new DeleteAction(this);
+				break;
+			case MOVE:
+				pAct = new MoveAction(this);
 				break;
 
 
