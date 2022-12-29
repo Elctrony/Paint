@@ -11,8 +11,11 @@ private:
 	Point Corner3;
 public:
 	CTriangle(Point, Point,Point, GfxInfo FigureGfxInfo);
+	CTriangle();
 	virtual void Draw(Output* pOut) const;
 	virtual bool Belong(int x1,int y1);
+	virtual void Save(ofstream& OutFile);
+	virtual void Load(ifstream& InFile);
 };
 
 #endif

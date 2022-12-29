@@ -273,6 +273,8 @@
     <ClInclude Include="Actions\ByType.h" />
     <ClInclude Include="Actions\ByColor.h" />
     <ClInclude Include="Actions\ByTypeAndColor.h" />
+    <ClInclude Include="Actions\SaveAction.h" />
+    <ClInclude Include="Actions\LoadAction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

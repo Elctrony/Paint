@@ -1,7 +1,13 @@
 #include "CHexagon.h"
+#include <fstream>
+#include <iostream>
 CHexagon::CHexagon(Point P1, GfxInfo FigureGfxInfo) :CFigure(FigureGfxInfo)
 {
 	Center = P1;
+}
+
+CHexagon::CHexagon() : CFigure(GfxInfo()) {
+
 }
 
 
@@ -38,4 +44,25 @@ bool CHexagon::Belong(int x1, int y1)
 
 	}
 	return false;
+}
+
+void CHexagon::Save(ofstream& fout) {
+	int fillColor = FigGfxInfo.isFilled ? GetColorIndex(FigGfxInfo.FillClr) : -1;
+	fout << hexagon << setw(8) << ID << setw(8) << Center.x << setw(8) << Center.y 
+		<< setw(8) << GetColorIndex(FigGfxInfo.DrawClr) << setw(8) << fillColor << endl;
+}
+
+void CHexagon::Load(ifstream& fin) {
+	int  draw, fill;
+	fin >> ID >> Center.x >> Center.y >> draw >> fill;
+	FigGfxInfo.DrawClr = getColorByIndex(draw);
+	if (fill != -1) {
+		FigGfxInfo.isFilled = true;
+		FigGfxInfo.FillClr = getColorByIndex(fill);
+	}
+	else {
+		FigGfxInfo.isFilled = false;
+	}
+	cout  << ID << setw(8) << Center.x << setw(8) << Center.y
+		<< setw(8) <<draw << setw(8) << fill << endl;
 }

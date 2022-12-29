@@ -204,6 +204,8 @@
     <ClInclude Include="Actions\DeleteAction.h" />
     <ClInclude Include="Actions\ChangeFillColor.h" />
     <ClInclude Include="Actions\Exit.h" />
+    <ClInclude Include="Actions\LoadAction.h" />
+    <ClInclude Include="Actions\SaveAction.h" />
     <ClInclude Include="Actions\ToDraw.h" />
     <ClInclude Include="Actions\ToPlay.h" />
     <ClInclude Include="Figures\CHexagon.h" />

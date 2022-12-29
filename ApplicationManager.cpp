@@ -19,6 +19,8 @@
 #include"Actions/ByType.h"
 #include"Actions/ByColor.h"
 #include"Actions/ByTypeAndColor.h"
+#include "Actions/SaveAction.h"
+#include"Actions/LoadAction.h"
 
 
 
@@ -27,6 +29,8 @@
 
 
 #include"Actions/Exit.h"
+
+#include<iostream>
 
 
 
@@ -109,8 +113,13 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case MODE3:
 			pAct = new ByTypeAndColor(this);
 			break;
-	
-
+		case TO_SAVE:
+			pAct = new SaveAction(this);
+			break;
+		case LOAD:
+			std::cout << "LOAD Action" << endl;
+			pAct = new LoadAction(this);
+			break;
 		
 
 		case EXIT:
@@ -338,4 +347,68 @@ int ApplicationManager::gettypeandcolorno(CFigure* fig)
 			n++;
 	}
 	return n;
+}
+
+void ApplicationManager::SaveAll(ofstream& fout) {
+	fout << GetColorIndex((pOut->getCrntDrawColor())) << setw(8) << GetColorIndex((pOut->getCrntFillColor())) << endl;
+	fout << FigCount << endl;
+	for (int i = 0; i < FigCount; i++) {
+		FigList[i]->Save(fout);
+	}
+}
+
+void ApplicationManager::LoadAll(ifstream& fin) {
+	clear();
+	FigCount = 0;
+	int drawIndex, fillIndex;
+
+}
+
+int ApplicationManager::GetColorIndex(color& c) {
+	if (c == RED) {
+		return 1;
+	}
+	else if (c == GREEN) {
+		return 2;
+	}
+	else if (c == BLUE) {
+		return 3;
+	}
+	else if (c == YELLOW) {
+		return 4;
+	}
+	else if (c == ORANGE) {
+		return 5;
+	}
+	else if (c == BLACK) {
+		return 6;
+	}
+	else {
+		return -1;
+	}
+}
+
+
+color ApplicationManager::getColorByIndex(int index) {
+	if (index == 1) {
+		return RED;
+	}
+	else if (index == 2) {
+		return GREEN;
+	}
+	else if (index == 3) {
+		return BLUE;
+	}
+	else if (index == 4) {
+		return YELLOW;
+	}
+	else if (index == 5) {
+		return ORANGE;
+	}
+	else if (index == 6) {
+		return BLACK;
+	}
+	else {
+		return WHITE;
+	}
 }

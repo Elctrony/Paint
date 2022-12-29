@@ -51,6 +51,7 @@ struct Point	//To be used for figures points
 	int x, y;
 };
 
+
 struct GfxInfo	//Graphical info of each figure (you may add more members)
 {
 	color DrawClr;	//Draw color of the figure

@@ -5,6 +5,8 @@
 #include "Figures\CFigure.h"
 #include "GUI\input.h"
 #include "GUI\output.h"
+#include <fstream>
+#include <iomanip>
 
 //Main class that manages everything in the application.
 class ApplicationManager
@@ -57,6 +59,15 @@ public:
 	Input *GetInput() const; //Return pointer to the input
 	Output *GetOutput() const; //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window	
+
+	//Save & Load figures
+
+	void SaveAll(ofstream& fout);
+	void LoadAll(ifstream& fin);
+
+	int GetColorIndex(color& c);
+	color getColorByIndex(int index);
+
 };
 
 #endif

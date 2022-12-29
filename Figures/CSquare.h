@@ -9,10 +9,12 @@ private:
 	Point Center;
 public:
 	CSquare(Point,GfxInfo FigureGfxInfo);
+	CSquare();
 	virtual void Draw(Output* pOut) const;
 	virtual bool Belong(int x1, int y1);
 	virtual void change(GfxInfo FigureGfxInfo);
-
+	virtual void Save(ofstream& OutFile);
+	virtual void Load(ifstream& InFile);
 };
 
 #endif
