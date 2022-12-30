@@ -2,7 +2,7 @@
 #define ACTION_H
 
 #include "..\DefS.h"
-
+#include <iostream>
 class ApplicationManager; //forward class declaration
 
 
@@ -21,6 +21,15 @@ public:
 	
 	//Execute action (code depends on action type)
 	virtual void Execute() =0;
+
+	virtual void Undo() {
+		cout << "Action UNDO FUNCTION"<<endl;
+
+	}
+	virtual void Redo() {
+		cout << "Action REDO FUNCTION" << endl;
+
+	}
 
 };
 

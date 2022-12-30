@@ -2,13 +2,15 @@
 #define ADD_TRI_ACTION_H
 
 #include "Action.h"
-
+#include "../Figures/CTriangle.h"
+#include "../ApplicationManager.h"
 //Add Triangle Action class
 class AddTriAction : public Action
 {
 private:
 	Point P1, P2,P3; //Triangle Corners
 	GfxInfo TriGfxInfo;
+	CTriangle* figTriangle;
 public:
 	AddTriAction(ApplicationManager* pApp);
 
@@ -18,6 +20,17 @@ public:
 	//Add triangle to the ApplicationManager
 	virtual void Execute();
 
+
+	virtual void Undo() {
+		cout << "Undo Add Triangle" << endl;
+		pManager->DeleteFigure(figTriangle);
+	}
+
+	virtual void Redo() {
+		cout << "REDO add Triangle" << endl;
+		pManager->AddFigure(figTriangle);
+
+	}
 };
 
 #endif

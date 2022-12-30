@@ -21,8 +21,8 @@
 #include"Actions/ByTypeAndColor.h"
 #include "Actions/SaveAction.h"
 #include"Actions/LoadAction.h"
-
-
+#include"Actions/UndoAction.h"
+#include"Actions/RedoAction.h"
 
 
 
@@ -45,10 +45,20 @@ ApplicationManager::ApplicationManager()
 	
 	SelectedFig = NULL;
 	FigCount = 0;
-		
+
+	UndoActionCount = 0;
+	PlayActionCount = 0;
 	//Create an array of figure pointers and set them to NULL		
 	for(int i=0; i<MaxFigCount; i++)
-		FigList[i] = NULL;	
+		FigList[i] = NULL;
+
+	//Create an array of Action pointers and set them to NULL		
+	for (int i = 0; i < MaxActionCount; i++)
+		UndoActions[i] = NULL;
+
+	for (int i = 0; i < MaxActionCount; i++)
+		PlayActions[i] = NULL;
+
 }
 
 //==================================================================================//
@@ -64,36 +74,44 @@ ActionType ApplicationManager::GetUserAction() const
 void ApplicationManager::ExecuteAction(ActionType ActType) 
 {
 	Action* pAct = NULL;
-	
+	bool undoAct = false;
 	//According to Action Type, create the corresponding action object
 	switch (ActType)
 	{
 		case DRAW_RECT:
 			pAct = new AddRectAction(this);
+			undoAct = true;
 			break;
 		case DRAW_CIRC:
 			pAct = new AddCircAction(this);
+			undoAct = true;
 			break;
 		case DRAW_HEXA:
 			pAct = new AddHexaAction(this);
+			undoAct = true;
 			break;
 		case DRAW_SQR:
 			pAct = new AddSqrAction(this);
+			undoAct = true;
 			break;
 		case DRAW_TRIANGLE:
 			pAct = new AddTriAction(this);
+			undoAct = true;
 			break;
 		case SELECT:
 			pAct = new SelectOneAction(this);
 			break;
 		case DELET:
 			pAct = new DeleteAction(this);
+			//undoAct = true;
 			break;
 		case FILL:
 			pAct = new ChangeFillColor(this);
+			//undoAct = true;
 			break;
 		case DRAWCOLOR:
 			pAct = new ChangeDrawColor(this);
+			//undoAct = true;
 			break;
 		case TO_PLAY:
 			pAct = new ToPlay(this);
@@ -120,8 +138,14 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			std::cout << "LOAD Action" << endl;
 			pAct = new LoadAction(this);
 			break;
-		
-
+		case UNDO:
+			std::cout << "UNDO Action" << endl;
+			pAct = new UndoAction(this);
+			break;
+		case REDO:
+			std::cout << "REDO Action" << endl;
+			pAct = new RedoAction(this);
+			break;
 		case EXIT:
 			pAct = new Exit(this);
 			break;
@@ -130,11 +154,16 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			return;
 	}
 	
+	if (undoAct) {
+		cout << "Action has been added List" << endl;
+		PlayActions[PlayActionCount] = pAct;
+		PlayActionCount++;
+		cout << PlayActionCount << endl;
+	}
 	//Execute the created action
 	if(pAct != NULL)
 	{
 		pAct->Execute();//Execute
-		delete pAct;	//You may need to change this line depending to your implementation
 		pAct = NULL;
 	}
 }
@@ -254,6 +283,23 @@ void ApplicationManager::del()
 			}
 		}
 	}
+}
+
+void ApplicationManager::DeleteFigure(CFigure* figure) {
+	GetOutput()->ClearDrawArea();
+	for (int i = 0; i < FigCount; i++)
+	{
+		if ((FigList[i]) == figure)
+		{
+			FigList[i] = NULL;
+			FigList[i] = FigList[FigCount - 1];
+			FigList[FigCount - 1] = NULL;
+			FigCount--;
+			cout << "Deleting figure" << endl;
+			break;
+		}
+	}
+	UpdateInterface();
 }
 void ApplicationManager::clear()
 {

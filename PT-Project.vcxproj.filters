@@ -167,6 +167,8 @@
     <ClCompile Include="Actions\ByType.cpp" />
     <ClCompile Include="Actions\ByColor.cpp" />
     <ClCompile Include="Actions\ByTypeAndColor.cpp" />
+    <ClCompile Include="Actions\SaveAction.cpp" />
+    <ClCompile Include="Actions\LoadAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -275,6 +277,8 @@
     <ClInclude Include="Actions\ByTypeAndColor.h" />
     <ClInclude Include="Actions\SaveAction.h" />
     <ClInclude Include="Actions\LoadAction.h" />
+    <ClInclude Include="Actions\UndoAction.h" />
+    <ClInclude Include="Actions\RedoAction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

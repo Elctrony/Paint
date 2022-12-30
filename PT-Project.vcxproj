@@ -140,6 +140,8 @@
     <ClCompile Include="Actions\DeleteAction.cpp" />
     <ClCompile Include="Actions\ChangeFillColor.cpp" />
     <ClCompile Include="Actions\Exit.cpp" />
+    <ClCompile Include="Actions\LoadAction.cpp" />
+    <ClCompile Include="Actions\SaveAction.cpp" />
     <ClCompile Include="Actions\ToDraw.cpp" />
     <ClCompile Include="Actions\ToPlay.cpp" />
     <ClCompile Include="Figures\CHexagon.cpp" />
@@ -205,9 +207,11 @@
     <ClInclude Include="Actions\ChangeFillColor.h" />
     <ClInclude Include="Actions\Exit.h" />
     <ClInclude Include="Actions\LoadAction.h" />
+    <ClInclude Include="Actions\RedoAction.h" />
     <ClInclude Include="Actions\SaveAction.h" />
     <ClInclude Include="Actions\ToDraw.h" />
     <ClInclude Include="Actions\ToPlay.h" />
+    <ClInclude Include="Actions\UndoAction.h" />
     <ClInclude Include="Figures\CHexagon.h" />
     <ClInclude Include="Figures\CTriangle.h" />
     <ClInclude Include="Figures\CSquare.h" />

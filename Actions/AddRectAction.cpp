@@ -41,8 +41,8 @@ void AddRectAction::Execute()
 	ReadActionParameters();
 	
 	//Create a rectangle with the parameters read from the user
-	CRectangle *R=new CRectangle(P1, P2, RectGfxInfo);
+	figRectangle =new CRectangle(P1, P2, RectGfxInfo);
 
 	//Add the rectangle to the list of figures
-	pManager->AddFigure(R);
+	pManager->AddFigure(figRectangle);
 }

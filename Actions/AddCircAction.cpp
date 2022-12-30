@@ -5,7 +5,7 @@
 
 #include "..\GUI\input.h"
 #include "..\GUI\Output.h"
-
+#include <iostream>
 AddCircAction::AddCircAction(ApplicationManager* pApp) :Action(pApp)
 {}
 
@@ -41,8 +41,20 @@ void AddCircAction::Execute()
 	ReadActionParameters();
 
 	//Create a circle with the parameters read from the user
-	CCircle* C = new CCircle(P1, P2, CircGfxInfo);
+	figCircle = new CCircle(P1, P2, CircGfxInfo);
 
 	//Add the circle to the list of figures
-	pManager->AddFigure(C);
+	pManager->AddFigure(figCircle);
+}
+
+
+void AddCircAction::Undo() {
+	cout << "UNDO ADD Circle" << endl;
+	pManager->DeleteFigure(figCircle);
+}
+
+void AddCircAction::Redo() {
+	cout << "REDO ADD Circle" << endl;
+
+	pManager->AddFigure(figCircle);
 }
