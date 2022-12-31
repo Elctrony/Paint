@@ -204,6 +204,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	   case STOPREC:
 		   pOut->PrintMessage("recording stopped");
 		   RECMODE = 0;
+		   if (i < 20);
+		   {
+			   for (int j = i; j < 20; j++)
+				   stored[i] = NULL;
+		   }
 		   i = 0;
 		   break;
 	   
