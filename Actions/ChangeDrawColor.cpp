@@ -13,23 +13,50 @@ void ChangeDrawColor::ReadActionParameters()
 	Output* pOut = pManager->GetOutput();
 	Input* pIn = pManager->GetInput();
 	pOut->PrintMessage("Select a drawing color");
+	ActType = pManager->GetUserAction();
+	pOut->ClearStatusBar();
 }
-void ChangeDrawColor::Execute()
+void ChangeDrawColor::Execute(bool mode)
 {
+	if(!mode)
 	ReadActionParameters();
+	if (mode)
+		pManager->setlastaction(this);
 	Output* pOut = pManager->GetOutput();
 
-	CFigure* FIG = pManager->GetSelectedFig();
-	ActionType ActType = pManager->GetUserAction();
-	pOut->ClearStatusBar();
+	FIG = pManager->GetSelectedFig();
 
 	if (FIG != NULL)
 	{
-		if (pManager->ccolor(ActType, UI.DrawColor))
+		lastColor = FIG->getdrawcolo();
+		if (pManager->ChngColor(ActType, UI.DrawColor))
 		{
 			FIG->ChngDrawClr(UI.DrawColor);
 			FIG->SetSelected(0);
 			pManager->SetSelectedFig(NULL);
 		}
 	}
+
+}
+
+
+
+
+void ChangeDrawColor::Undo()
+{
+	if (FIG == NULL) {
+		return;
+	}
+	color currentColor = FIG->getdrawcolo();
+	FIG->ChngDrawClr(lastColor);
+	lastColor = currentColor;
+}
+
+void ChangeDrawColor::Redo() {
+	if (FIG == NULL) {
+		return;
+	}
+	color currentColor = FIG->getdrawcolo();
+	FIG->ChngDrawClr(lastColor);
+	lastColor = currentColor;
 }

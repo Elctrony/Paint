@@ -7,14 +7,18 @@ class CSquare : public CFigure
 {
 private:
 	Point Center;
+	int ID;
 public:
-	CSquare(Point,GfxInfo FigureGfxInfo);
 	CSquare();
+	CSquare(Point,GfxInfo FigureGfxInfo);
 	virtual void Draw(Output* pOut) const;
 	virtual bool Belong(int x1, int y1);
-	virtual void change(GfxInfo FigureGfxInfo);
+	virtual void PrintInfo(Output* pOut);
+	virtual void Set_ID(int id);
+	virtual void shift(Point P);
 	virtual void Save(ofstream& OutFile);
-	virtual void Load(ifstream& InFile);
+	virtual void Load(ifstream& Infile);
+	virtual Point GetCenter();
 };
 
 #endif

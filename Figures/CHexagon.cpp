@@ -1,13 +1,13 @@
 #include "CHexagon.h"
 #include <fstream>
 #include <iostream>
+CHexagon::CHexagon() : CFigure(GfxInfo())
+{
+
+}
 CHexagon::CHexagon(Point P1, GfxInfo FigureGfxInfo) :CFigure(FigureGfxInfo)
 {
 	Center = P1;
-}
-
-CHexagon::CHexagon() : CFigure(GfxInfo()) {
-
 }
 
 
@@ -45,10 +45,29 @@ bool CHexagon::Belong(int x1, int y1)
 	}
 	return false;
 }
+void CHexagon::PrintInfo(Output* pOut)
+{
+	pOut->PrintMessage("hexagon_ID:"+to_string(ID)+" Center:" + to_string(Center.x) + " " + to_string(Center.y));
 
+}
+
+void CHexagon::Set_ID(int id)
+{
+	ID = id;
+}
+
+void CHexagon::shift(Point P)
+{
+	Center.x = P.x;
+	Center.y = P.y;
+}
+
+Point CHexagon::GetCenter() {
+	return Center;
+}
 void CHexagon::Save(ofstream& fout) {
 	int fillColor = FigGfxInfo.isFilled ? GetColorIndex(FigGfxInfo.FillClr) : -1;
-	fout << hexagon << setw(8) << ID << setw(8) << Center.x << setw(8) << Center.y 
+	fout << hexagon << setw(8) << ID << setw(8) << Center.x << setw(8) << Center.y
 		<< setw(8) << GetColorIndex(FigGfxInfo.DrawClr) << setw(8) << fillColor << endl;
 }
 
@@ -63,6 +82,6 @@ void CHexagon::Load(ifstream& fin) {
 	else {
 		FigGfxInfo.isFilled = false;
 	}
-	cout  << ID << setw(8) << Center.x << setw(8) << Center.y
-		<< setw(8) <<draw << setw(8) << fill << endl;
+	cout << ID << setw(8) << Center.x << setw(8) << Center.y
+		<< setw(8) << draw << setw(8) << fill << endl;
 }

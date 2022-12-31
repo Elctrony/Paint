@@ -18,6 +18,7 @@ enum ActionType //The actions supported (you can add more if needed)
 	COLOR_BLUE,
 	COLOR_GREEN,
 	MOVE,
+	DRAG,
 	STARTREC,
 	STOPREC,
 	PLAYREC,
@@ -25,6 +26,7 @@ enum ActionType //The actions supported (you can add more if needed)
 	MODE1,
 	MODE2,
 	MODE3,
+	SOUND,
 	LOAD,
 	TO_SAVE,
 	CLEAR,
@@ -33,6 +35,7 @@ enum ActionType //The actions supported (you can add more if needed)
 	FILL,
 	UNDO,
 	REDO,
+	
 
 
 
@@ -50,7 +53,6 @@ struct Point	//To be used for figures points
 {
 	int x, y;
 };
-
 
 struct GfxInfo	//Graphical info of each figure (you may add more members)
 {

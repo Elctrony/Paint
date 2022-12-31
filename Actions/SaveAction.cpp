@@ -11,9 +11,9 @@ void SaveAction::ReadActionParameters() {
 	oPut->PrintMessage("Figures have been saved in " + filename);
 }
 
-void SaveAction::Execute() {
-		ReadActionParameters();
-		ofstream fout(filename);
-		pManager->SaveAll(fout);
-		fout.close();
+void SaveAction::Execute(bool mode) {
+	ReadActionParameters();
+	ofstream fout(filename);
+	pManager->SaveAll(fout);
+	fout.close();
 }

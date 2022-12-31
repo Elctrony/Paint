@@ -14,13 +14,20 @@ void AddHexaAction::ReadActionParameters()
 	//Get a Pointer to the Input / Output Interfaces
 	Output* pOut = pManager->GetOutput();
 	Input* pIn = pManager->GetInput();
+	sound = pManager->getsound();
 
 	pOut->PrintMessage("New Hexagon: Click at center");
 
 	//Read center and store in point P1
-	pIn->GetPointClicked(P1.x, P1.y);
+	do
+	{
+		pIn->GetPointClicked(P1.x, P1.y);
+		if (P1.y - 25 * sqrt(3) < UI.ToolBarHeight || (P1.y + 25 * sqrt(3) > UI.height - UI.StatusBarHeight))
+			pOut->PrintMessage("invalid point click again");
 
-	HexaGfxInfo.isFilled = false;	//default is not filled
+	} while (P1.y-25*sqrt(3) < UI.ToolBarHeight|| (P1.y+25 * sqrt(3) > UI.height-UI.StatusBarHeight));//check if point is out of boundaries
+
+	HexaGfxInfo.isFilled = pManager->getfillstatus();	//default is not filled
 	//get drawing, filling colors and pen width from the interface
 	HexaGfxInfo.DrawClr = pOut->getCrntDrawColor();
 	HexaGfxInfo.FillClr = pOut->getCrntFillColor();
@@ -30,14 +37,28 @@ void AddHexaAction::ReadActionParameters()
 }
 
 //Execute the action
-void AddHexaAction::Execute()
+void AddHexaAction::Execute(bool mode)
 {
+	if(!mode)
 	//This action needs to read some parameters first
 	ReadActionParameters();
+	if (mode)
+		pManager->setlastaction(this);
 
 	//Create a Hexagon with the parameters read from the user
-	figHexagon = new CHexagon(P1, HexaGfxInfo);
+	figHexagon= new CHexagon(P1, HexaGfxInfo);
 
 	//Add the hexagon to the list of figures
+	pManager->AddFigure(figHexagon);
+	if (sound)
+		PlaySound(TEXT("sounds\\hexagon.wav"), NULL, SND_ASYNC);
+}
+
+
+void AddHexaAction::Undo() {
+	pManager->DeleteFigure(figHexagon);
+}
+
+void AddHexaAction::Redo() {
 	pManager->AddFigure(figHexagon);
 }

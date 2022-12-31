@@ -3,13 +3,13 @@
 
 #include "Action.h"
 #include "../Figures/CTriangle.h"
-#include "../ApplicationManager.h"
 //Add Triangle Action class
 class AddTriAction : public Action
 {
 private:
 	Point P1, P2,P3; //Triangle Corners
 	GfxInfo TriGfxInfo;
+	bool sound;
 	CTriangle* figTriangle;
 public:
 	AddTriAction(ApplicationManager* pApp);
@@ -18,19 +18,12 @@ public:
 	virtual void ReadActionParameters();
 
 	//Add triangle to the ApplicationManager
-	virtual void Execute();
+	virtual void Execute(bool mode=0);
+	
 
 
-	virtual void Undo() {
-		cout << "Undo Add Triangle" << endl;
-		pManager->DeleteFigure(figTriangle);
-	}
-
-	virtual void Redo() {
-		cout << "REDO add Triangle" << endl;
-		pManager->AddFigure(figTriangle);
-
-	}
+	virtual void Undo();
+	virtual void Redo();
 };
 
 #endif

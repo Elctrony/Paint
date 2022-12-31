@@ -4,6 +4,7 @@
 #include"..\Figures\CSquare.h"
 #include"..\Figures\CRectangle.h"
 #include"..\Figures\CTriangle.h"
+
 CFigure::CFigure(GfxInfo FigureGfxInfo)
 { 
 	FigGfxInfo = FigureGfxInfo;	//Default status is non-filled.
@@ -21,17 +22,14 @@ void CFigure::ChngDrawClr(color Dclr)
 {	FigGfxInfo.DrawClr = Dclr; }
 
 void CFigure::ChngFillClr(color Fclr)
-{
+{	
 	FigGfxInfo.isFilled = true;
-	FigGfxInfo.FillClr = Fclr;
+	FigGfxInfo.FillClr = Fclr; 
 }
+
 bool CFigure::isFilled()
 {
 	return FigGfxInfo.isFilled;
-}
-color CFigure::getfillcolor()
-{
-	return FigGfxInfo.FillClr;
 }
 void CFigure::SetFill(bool b)
 {
@@ -44,6 +42,13 @@ void CFigure::SetHidden(bool b)
 bool CFigure::IsHidden()
 {
 	return Hidden;
+}
+color CFigure::getfillcolor()
+{
+	return FigGfxInfo.FillClr;
+}
+color CFigure::getdrawcolo() {
+	return FigGfxInfo.DrawClr;
 }
 type CFigure::gettype()
 {

@@ -1,13 +1,15 @@
 #include "CSquare.h"
-#include <fstream>
-#include <iostream>
+#include<fstream>
+#include<iostream>
+CSquare::CSquare() : CFigure(GfxInfo())
+{
+
+}
 CSquare::CSquare(Point P1, GfxInfo FigureGfxInfo) :CFigure(FigureGfxInfo)
 {
 	Center = P1;
 }
 
-CSquare::CSquare() : CFigure(GfxInfo()) {
-}
 
 void CSquare::Draw(Output* pOut) const
 {
@@ -20,11 +22,25 @@ bool CSquare::Belong(int x1, int y1)
 		return false;
 	return true;
 }
-void CSquare::change(GfxInfo FigureGfxInfo)
-{
 
+void CSquare::PrintInfo(Output* pOut)
+{
+	pOut->PrintMessage("square_ID:"+to_string(ID)+" center:"+to_string(Center.x)+" "+to_string(Center.y));
 }
 
+void CSquare::Set_ID(int id)
+{
+	ID = id;
+}
+
+Point CSquare::GetCenter() {
+	
+	return Center;
+}
+void CSquare::shift(Point P)
+{
+	Center = P;
+}
 void CSquare::Save(ofstream& fout) {
 	int fillColor = FigGfxInfo.isFilled ? GetColorIndex(FigGfxInfo.FillClr) : -1;
 	fout << square << setw(8) << ID << setw(8) << Center.x << setw(8) << Center.y << setw(8)
@@ -34,7 +50,7 @@ void CSquare::Save(ofstream& fout) {
 
 void CSquare::Load(ifstream& InFile) {
 	int draw, fill;
-	InFile >> ID >> Center.x >> Center.y >>  draw >> fill;
+	InFile >> ID >> Center.x >> Center.y >> draw >> fill;
 	cout << ID << setw(8) << Center.x << setw(8) << Center.y << setw(8) << draw << setw(8) << fill << endl;
 	FigGfxInfo.DrawClr = getColorByIndex(draw);
 	if (fill != -1) {

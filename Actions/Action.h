@@ -2,7 +2,7 @@
 #define ACTION_H
 
 #include "..\DefS.h"
-#include <iostream>
+
 class ApplicationManager; //forward class declaration
 
 
@@ -20,16 +20,12 @@ public:
 	virtual void ReadActionParameters() =0;
 	
 	//Execute action (code depends on action type)
-	virtual void Execute() =0;
+	virtual void Execute(bool mode=0) =0;
 
-	virtual void Undo() {
-		cout << "Action UNDO FUNCTION"<<endl;
-
-	}
-	virtual void Redo() {
-		cout << "Action REDO FUNCTION" << endl;
-
-	}
+	//return pointer to recorded action
+	virtual Action* recordaction() { return NULL; };
+	virtual void Undo(){};
+	virtual void Redo(){};
 
 };
 

@@ -6,7 +6,7 @@
 #include "..\Figures\CFigure.h"
 ToDraw::ToDraw(ApplicationManager* pApp) :Action(pApp)
 {}
-void ToDraw::Execute()
+void ToDraw::Execute(bool mode)
 {
 	ReadActionParameters();
 	Output* pOut = pManager->GetOutput();

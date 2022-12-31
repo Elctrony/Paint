@@ -10,7 +10,7 @@ public:
 		pManager->GetOutput()->PrintMessage("Redo Last Action");
 	}
 
-	void Execute() {
+	void Execute(bool mode=0) {
 		pManager->RedoLastAction();
 		ReadActionParameters();
 	}

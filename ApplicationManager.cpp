@@ -6,35 +6,25 @@
 #include"Actions/AddTriAction.h"
 #include"Actions/SelectOneAction.h"
 #include"Actions/DeleteAction.h"
-#include"Actions/ChangeFillColor.h"
-#include"Actions/ChangeDrawColor.h"
-#include"Actions/ToPlay.h"
-#include"Actions/ToDraw.h"
+#include"Actions/MoveAction.h"
+#include"Actions/DraggingAction.h"
+#include"Actions/StartRecAction.h"
+#include"Actions/PlayRecAction.h"
 #include"Actions/ClearAll.h"
-#include"Figures/CCircle.h"
-#include"Figures/CHexagon.h"
-#include"Figures/CSquare.h"
-#include"Figures/CRectangle.h"
-#include"Figures/CTriangle.h"
+#include"Actions/ChangeDrawColor.h"
+#include"Actions/ChangeFillColor.h"
+#include"Actions/ToDraw.h"
+#include"Actions/ToPlay.h"
 #include"Actions/ByType.h"
 #include"Actions/ByColor.h"
 #include"Actions/ByTypeAndColor.h"
-#include "Actions/SaveAction.h"
 #include"Actions/LoadAction.h"
+#include"Actions/SaveAction.h"
+#include"Actions/Sound.h"
+#include<fstream>
+#include<iostream>
 #include"Actions/UndoAction.h"
 #include"Actions/RedoAction.h"
-
-
-
-
-
-#include"Actions/Exit.h"
-
-#include<iostream>
-
-
-
-
 
 //Constructor
 ApplicationManager::ApplicationManager()
@@ -43,22 +33,28 @@ ApplicationManager::ApplicationManager()
 	pOut = new Output;
 	pIn = pOut->CreateInput();
 	
-	SelectedFig = NULL;
-	FigCount = 0;
-
 	UndoActionCount = 0;
 	PlayActionCount = 0;
+	i = 0;
+
+	SelectedFig = NULL;
+	Count = 0; //to set the fig id
+	FigCount = 0; //actual figure count
+	pLast = NULL; //intializing pointer to the last action
+		
 	//Create an array of figure pointers and set them to NULL		
 	for(int i=0; i<MaxFigCount; i++)
-		FigList[i] = NULL;
+		FigList[i] = NULL;	
 
-	//Create an array of Action pointers and set them to NULL		
+	for (int i = 0; i < 20; i++)
+		stored[i] = NULL;
+
+	soundon = true;
 	for (int i = 0; i < MaxActionCount; i++)
 		UndoActions[i] = NULL;
 
 	for (int i = 0; i < MaxActionCount; i++)
 		PlayActions[i] = NULL;
-
 }
 
 //==================================================================================//
@@ -73,102 +69,189 @@ ActionType ApplicationManager::GetUserAction() const
 //Creates an action and executes it
 void ApplicationManager::ExecuteAction(ActionType ActType) 
 {
-	Action* pAct = NULL;
+	
 	bool undoAct = false;
+	Action* pAct = NULL;
+	bool clearAction = true;
+	bool clearAll = false;
+	bool flag = 0;
 	//According to Action Type, create the corresponding action object
 	switch (ActType)
 	{
+		//Add New Rectangle
 		case DRAW_RECT:
 			pAct = new AddRectAction(this);
 			undoAct = true;
+			flag = 1;
 			break;
+		//Add New Circle
 		case DRAW_CIRC:
 			pAct = new AddCircAction(this);
 			undoAct = true;
+			flag = 1;
 			break;
+
+		//Add New Hexagon
 		case DRAW_HEXA:
 			pAct = new AddHexaAction(this);
 			undoAct = true;
-			break;
+			flag = 1;
+
+		    break;
+
+		//Add new square
 		case DRAW_SQR:
 			pAct = new AddSqrAction(this);
 			undoAct = true;
+			flag = 1;
+
 			break;
+
+		//Add new triangle
 		case DRAW_TRIANGLE:
 			pAct = new AddTriAction(this);
 			undoAct = true;
+			flag = 1;
 			break;
+
+		//Select a figure
 		case SELECT:
 			pAct = new SelectOneAction(this);
+			flag = 1;
 			break;
-		case DELET:
-			pAct = new DeleteAction(this);
-			//undoAct = true;
+
+       //Delete a figure
+	   case DELET:
+		    pAct = new DeleteAction(this,soundon);
+			undoAct = true;
+			flag = 1;
+		    break;
+
+	   //Move selected figure
+	   case MOVE:
+			pAct = new MoveAction(this);
+			undoAct = true;
+			flag = 1;
+
 			break;
-		case FILL:
-			pAct = new ChangeFillColor(this);
-			//undoAct = true;
+
+	  //move selected figure by dragging
+	   case DRAG:
+		   pAct = new DraggingAction(this);
+		   break;
+
+	   //Start Recording
+	   case STARTREC:
+		   i = 0;
+			pAct = new StartRecAction(this);
 			break;
-		case DRAWCOLOR:
-			pAct = new ChangeDrawColor(this);
-			//undoAct = true;
+
+	   //Play recording
+	   case PLAYREC:
+			pAct = new PlayRecAction(this);
 			break;
-		case TO_PLAY:
-			pAct = new ToPlay(this);
-			break;
-		case TO_DRAW:
-			pAct = new ToDraw(this);
-			break;
-		case CLEAR:
-			pAct = new ClearAll(this);
-			break;
-		case MODE1:
-			pAct = new ByType(this);
-			break;
-		case MODE2:
-			pAct = new ByColor(this);
-			break;
-		case MODE3:
-			pAct = new ByTypeAndColor(this);
-			break;
-		case TO_SAVE:
-			pAct = new SaveAction(this);
-			break;
-		case LOAD:
-			std::cout << "LOAD Action" << endl;
-			pAct = new LoadAction(this);
-			break;
-		case UNDO:
-			std::cout << "UNDO Action" << endl;
-			pAct = new UndoAction(this);
-			break;
-		case REDO:
-			std::cout << "REDO Action" << endl;
-			pAct = new RedoAction(this);
-			break;
-		case EXIT:
-			pAct = new Exit(this);
+
+	  //clear all action
+	   case CLEAR:
+		   pAct = new ClearAll(this);
+		   clearAll = true;
+		   flag = 1;
+		   break;
+	   case DRAWCOLOR:
+		   pAct = new ChangeDrawColor(this);
+		   undoAct = true;
+		   flag = 1;
+		   break;
+	   case FILL:
+		   pAct = new ChangeFillColor(this);
+		   undoAct = true;
+		   flag = 1;
+		   break;
+	   case TO_DRAW:
+		   pAct = new ToDraw(this);
+		   break;
+	   case TO_PLAY:
+		   pAct = new ToPlay(this);
+		   break;
+	   case MODE1:
+		   pAct = new ByType(this);
+		   break;
+	   case MODE2:
+		   pAct = new ByColor(this);
+		   break;
+	   case MODE3:
+		   pAct = new ByTypeAndColor(this);
+		   break;
+	   case TO_SAVE:
+		   pAct = new SaveAction(this);
+		   break;
+	   case LOAD:
+		   pAct = new LoadAction(this);
+		   break;
+	   case SOUND:
+		   pAct = new Sound(this);
+		   break;
+	   case UNDO:
+		   pAct = new UndoAction(this);
+		   clearAction = false;
+		   flag = 1;
+		   break;
+	   case REDO:
+		   pAct = new RedoAction(this);
+		   clearAction = false;
+		   flag = 1;
+		   break;
+	   case STOPREC:
+		   pOut->PrintMessage("recording stopped");
+		   RECMODE = 0;
+		   i = 0;
+		   break;
+	   
+
+
+
+       case EXIT:
+		   pOut->PrintMessage("Exiting...Goodbye");
+		   if (soundon)
+			   PlaySound(TEXT("sounds\\goodbye.wav"), NULL, SND_ASYNC);
+		   Sleep(2000);
+			///create ExitAction here
+			
 			break;
 		
-		case STATUS:	//a click on the status bar ==> no action
+	   case STATUS:	//a click on the status bar ==> no action
 			return;
 	}
-	
+	if (RECMODE&&i<20&&flag)
+	{
+		stored[i] = pAct;
+		i++;
+	}
 	if (undoAct) {
 		cout << "Action has been added List" << endl;
 		PlayActions[PlayActionCount] = pAct;
 		PlayActionCount++;
 		cout << PlayActionCount << endl;
 	}
+	//if (clearAction) {
+		//ClearUndoAction();
+	//}
+	if (clearAll) {
+		//ClearUndoAction();
+		//ClearPlayAction();
+	}
+	pLast = pAct; //store last action in pLast
 	//Execute the created action
 	if(pAct != NULL)
 	{
 		pAct->Execute();//Execute
+		
+		//if(!RECMODE)
+		//delete pAct;	//You may need to change this line depending to your implementation
 		pAct = NULL;
 	}
 }
-
-bool ApplicationManager::ccolor(ActionType ActType,color&c)
+bool ApplicationManager::ChngColor(ActionType ActType, color& c)
 {
 	Action* pAct = NULL;
 	switch (ActType)
@@ -201,8 +284,12 @@ bool ApplicationManager::ccolor(ActionType ActType,color&c)
 //Add a figure to the list of figures
 void ApplicationManager::AddFigure(CFigure* pFig)
 {
-	if(FigCount < MaxFigCount )
-		FigList[FigCount++] = pFig;	
+	if (FigCount < MaxFigCount)
+	{
+		Count++;
+		FigList[FigCount++] = pFig;
+		FigList[FigCount - 1]->Set_ID(Count);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////
 CFigure *ApplicationManager::GetFigure(int x, int y) const
@@ -223,21 +310,37 @@ CFigure *ApplicationManager::GetFigure(int x, int y) const
 
 	return NULL;
 }
+int ApplicationManager::getfigcount() const
+{
+	return FigCount;
+}
+//==================================================================================//
+//							Storing recordings Function							//
+//==================================================================================//
+
+
+Action** ApplicationManager::GetRecs()
+{
+	return stored;
+}
 //==================================================================================//
 //							Interface Management Functions							//
 //==================================================================================//
 
 //Draw all figures on the user interface
 void ApplicationManager::UpdateInterface() const
-{
-	for (int i = 0; i < FigCount; i++)
-	{
-		if (!(FigList[i]->IsHidden()))
-		{
+{	
+	pOut->ClearDrawArea();
+	for(int i=0; i<FigCount; i++)
+		if(!FigList[i]->IsHidden())
 			FigList[i]->Draw(pOut);		//Call Draw function (virtual member fn)
-		}
-	}
 }
+Action* ApplicationManager::GetLastAction() const
+{
+	return pLast; //return pointer to the last action's object
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the input
 Input *ApplicationManager::GetInput() const
@@ -245,29 +348,22 @@ Input *ApplicationManager::GetInput() const
 //Return a pointer to the output
 Output *ApplicationManager::GetOutput() const
 {	return pOut; }
-////////////////////////////////////////////////////////////////////////////////////
-//Destructor
-ApplicationManager::~ApplicationManager()
-{
-	for(int i=0; i<FigCount; i++)
-		delete FigList[i];
-	delete pIn;
-	delete pOut;
-	
-}
 
+//////////////////////////////
+//make selectedfig points to given figure
 void ApplicationManager::SetSelectedFig(CFigure* F)
 {
 	SelectedFig = F;
-
 }
 
-CFigure* ApplicationManager::GetSelectedFig()
+//return a pointer to the selected figure
+CFigure* ApplicationManager::GetSelectedFig() const 
 {
 	return SelectedFig;
 }
 
-void ApplicationManager::del()
+//////////////////////////////
+void ApplicationManager::del() //remove deleted figure from figlist
 {
 	if (SelectedFig != NULL)
 	{
@@ -275,7 +371,9 @@ void ApplicationManager::del()
 		{
 			if ((FigList[i]) == SelectedFig)
 			{
+				delete SelectedFig;
 				SelectedFig = NULL;
+				pOut->ClearStatusBar();
 				FigList[i] = FigList[FigCount - 1];
 				FigList[FigCount - 1] = NULL;
 				FigCount--;
@@ -284,23 +382,6 @@ void ApplicationManager::del()
 		}
 	}
 }
-
-void ApplicationManager::DeleteFigure(CFigure* figure) {
-	GetOutput()->ClearDrawArea();
-	for (int i = 0; i < FigCount; i++)
-	{
-		if ((FigList[i]) == figure)
-		{
-			FigList[i] = NULL;
-			FigList[i] = FigList[FigCount - 1];
-			FigList[FigCount - 1] = NULL;
-			FigCount--;
-			cout << "Deleting figure" << endl;
-			break;
-		}
-	}
-	UpdateInterface();
-}
 void ApplicationManager::clear()
 {
 	for (int i = 0; i < FigCount; i++)
@@ -308,39 +389,68 @@ void ApplicationManager::clear()
 		delete FigList[i];
 	}
 	FigCount = 0;
+	pLast = NULL;
 }
 
-int ApplicationManager::getfigcount()
+void ApplicationManager::ClearRec()
 {
-	return FigCount;
-}
-bool ApplicationManager::cantype()
-{
-	if (FigCount > 1)
-	{
-		for (int i = 1; i < FigCount; i++)
+	//for (int i = 0; i < 20; i++)
+		//if (stored[i] != NULL)
 		{
-			if (FigList[0]->gettype() != FigList[i]->gettype())
-				return true;
+			//delete stored[i];
+			//stored[i] = NULL;
 		}
+}
+
+//checking if any figure is filled 
+bool ApplicationManager::getfillstatus()
+{
+	for (int i = 0; i < FigCount; i++)
+	{
+		if (FigList[i]->isFilled())
+			return true;
 	}
 	return false;
 }
-CFigure* ApplicationManager::getrandfig()
+////////////////////////////////////////////////////////////////////////////////////
+//Destructor
+ApplicationManager::~ApplicationManager()
 {
-	int n = rand() % FigCount;
-	return FigList[n];
+	for (int i = 0; i < FigCount; i++)
+		delete FigList[i];
+	delete pIn;
+	delete pOut;
+
 }
-int ApplicationManager::gettypeno(CFigure* fig)
+
+//unhiding all figures
+void ApplicationManager::unhideall()
 {
-	int n = 0;
 	for (int i = 0; i < FigCount; i++)
 	{
-		if (FigList[i]->gettype() == fig->gettype())
-			n++;
+		if (FigList[i]->IsHidden())
+			FigList[i]->SetHidden(0);
 	}
-	return n;
 }
+
+//getting a random figure
+CFigure* ApplicationManager::getrandfig()
+{
+	int n = rand() % FigCount;  //choosing a random valid number 
+	return FigList[n];
+}
+
+//getting a random filled figure
+CFigure* ApplicationManager::getrandcolorfig()
+{
+	int n = rand() % FigCount;  //choosing a random valid number 
+	while (!FigList[n]->isFilled())  //looping till a filled figure is found
+		n = rand() % FigCount;
+
+	return FigList[n];
+}
+
+//getting number of figures with the same color
 int ApplicationManager::getcolorno(CFigure* fig)
 {
 	int n = 0;
@@ -351,50 +461,51 @@ int ApplicationManager::getcolorno(CFigure* fig)
 	}
 	return n;
 }
-void ApplicationManager::unhideall()
-{
-	for (int i = 0; i < FigCount; i++)
-	{
-		if (FigList[i]->IsHidden())
-			FigList[i]->SetHidden(0);
-	}
-}
-bool ApplicationManager::cancolor()
-{
-	if (FigCount > 1)
-	{
-		for (int i = 1; i < FigCount; i++)
-		{
-			if (FigList[0]->getfillcolor() != FigList[i]->getfillcolor())
-				return true;
-		}
-	}
-	return false;
-}
-bool ApplicationManager::cantypeandcolor()
-{
-	if (FigCount > 1)
-	{
-		for (int i = 1; i < FigCount; i++)
-		{
-			if (FigList[0]->getfillcolor() != FigList[i]->getfillcolor()&& FigList[0]->gettype() != FigList[i]->gettype())
-				return true;
-		}
-	}
-	return false;
-}
 
-int ApplicationManager::gettypeandcolorno(CFigure* fig)
+//getting number of figures with the same type 
+int ApplicationManager::gettypeno(CFigure* fig)
 {
 	int n = 0;
 	for (int i = 0; i < FigCount; i++)
 	{
-		if (FigList[i]->gettype() == fig->gettype()&& FigList[i]->getfillcolor() == fig->getfillcolor())
+		if (FigList[i]->gettype() == fig->gettype())
 			n++;
 	}
 	return n;
 }
 
+//getting number of figures with the same type and color
+int ApplicationManager::gettypeandcolorno(CFigure* fig)
+{
+	int n = 0;
+	for (int i = 0; i < FigCount; i++)
+	{
+		if (FigList[i]->gettype() == fig->gettype() && FigList[i]->getfillcolor() == fig->getfillcolor())
+			n++;
+	}
+	return n;
+}
+
+//checking if there are filled figures to play with
+bool ApplicationManager::CanPlay()
+{
+	for (int i = 0; i < FigCount; i++)
+	{
+		if (FigList[i]->isFilled())
+			return true;
+	}
+	return false;
+}
+
+
+void ApplicationManager::setsound(bool b)
+{
+	soundon = b;
+}
+bool ApplicationManager::getsound()
+{
+	return soundon;
+}
 void ApplicationManager::SaveAll(ofstream& fout) {
 	fout << GetColorIndex((pOut->getCrntDrawColor())) << setw(8) << GetColorIndex((pOut->getCrntFillColor())) << endl;
 	fout << FigCount << endl;
@@ -402,7 +513,6 @@ void ApplicationManager::SaveAll(ofstream& fout) {
 		FigList[i]->Save(fout);
 	}
 }
-
 void ApplicationManager::LoadAll(ifstream& fin) {
 	clear();
 	FigCount = 0;
@@ -457,4 +567,20 @@ color ApplicationManager::getColorByIndex(int index) {
 	else {
 		return WHITE;
 	}
+}
+void ApplicationManager::DeleteFigure(CFigure* figure) {
+	GetOutput()->ClearDrawArea();
+	for (int i = 0; i < FigCount; i++)
+	{
+		if ((FigList[i]) == figure)
+		{
+			FigList[i] = NULL;
+			FigList[i] = FigList[FigCount - 1];
+			FigList[FigCount - 1] = NULL;
+			FigCount--;
+			cout << "Deleting figure" << endl;
+			break;
+		}
+	}
+	UpdateInterface();
 }

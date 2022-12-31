@@ -6,7 +6,7 @@
 #include "..\Figures\CFigure.h"
 ToPlay::ToPlay(ApplicationManager* pApp) :Action(pApp)
 {}
-void ToPlay::Execute()
+void ToPlay::Execute(bool mode)
 {
 	ReadActionParameters();
 	Output* pOut = pManager->GetOutput();
@@ -27,3 +27,4 @@ void ToPlay::ReadActionParameters()
 	pOut->PrintMessage("Playing Time!!");
 
 }
+

@@ -14,7 +14,7 @@ Output::Output()
 
 	UI.StatusBarHeight = 50;
 	UI.ToolBarHeight = 50;
-	UI.MenuItemWidth = 50;
+	UI.MenuItemWidth = 46;
 
 	UI.DrawColor = BLUE;	//Drawing color
 	UI.FillColor = GREEN;	//Filling color
@@ -22,7 +22,7 @@ Output::Output()
 	UI.BkGrndColor = LIGHTGOLDENRODYELLOW;	//Background color
 	UI.HighlightColor = MAGENTA;	//This color should NOT be used to draw figures. use if for highlight only
 	UI.StatusBarColor = TURQUOISE;
-	UI.PenWidth = 3;	//width of the figures frames
+	UI.PenWidth = 5;	//width of the figures frames
 
 
 	//Create the output window
@@ -72,7 +72,7 @@ void Output::ClearStatusBar() const
 void Output::CreateDrawToolBar() const
 {
 	UI.InterfaceMode = MODE_DRAW;
-	UI.MenuItemWidth = 50;
+	UI.MenuItemWidth = 46;
 
 
 	//You can draw the tool bar icons in any way you want.
@@ -97,9 +97,13 @@ void Output::CreateDrawToolBar() const
 	MenuItemImages[ITM_SELECT] = "images\\MenuItems\\Menu_Select.jpg";
 	MenuItemImages[ITM_FILL] = "images\\MenuItems\\Menu_Fill.jpg";
 	MenuItemImages[ITM_DRAWCOLOR] = "images\\MenuItems\\Menu_Drawcolor.jpg";
+	MenuItemImages[ITM_SOUND] = "images\\MenuItems\\Menu_Sound.jpg";
+
 
 
 	MenuItemImages[ITM_MOVE] = "images\\MenuItems\\Menu_Move.jpg";
+	MenuItemImages[ITM_DRAG] = "images\\MenuItems\\Menu_Drag.jpg";
+
 	MenuItemImages[ITM_UNDO] = "images\\MenuItems\\Menu_Undo.jpg";
 	MenuItemImages[ITM_REDO] = "images\\MenuItems\\Menu_Redo.jpg";
 	MenuItemImages[ITM_REC] = "images\\MenuItems\\Menu_Rec.jpg";
@@ -185,20 +189,9 @@ color Output::getCrntDrawColor() const	//get current drawing color
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void Output::setCrntDrawColor(color draw) {
-	UI.DrawColor = draw;
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
 color Output::getCrntFillColor() const	//get current filling color
 {
 	return UI.FillColor;
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-void Output::setCrntFillColor(color draw) {
-	UI.FillColor = draw;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -206,9 +199,6 @@ int Output::getCrntPenWidth() const		//get current pen width
 {
 	return UI.PenWidth;
 }
-
-
-
 
 //======================================================================================//
 //								Figures Drawing Functions								//
@@ -222,7 +212,7 @@ void Output::DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo, bool selected) co
 	else
 		DrawingClr = RectGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, 1);
+	pWind->SetPen(DrawingClr, 5);
 	drawstyle style;
 	if (RectGfxInfo.isFilled)
 	{
@@ -245,7 +235,7 @@ void Output::DrawTri(Point P1, Point P2, Point P3, GfxInfo RectGfxInfo, bool sel
 	else
 		DrawingClr = RectGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, 1);
+	pWind->SetPen(DrawingClr, 5);
 	drawstyle style;
 	if (RectGfxInfo.isFilled)
 	{
@@ -268,7 +258,7 @@ void Output::DrawSQ(Point P1, GfxInfo RectGfxInfo, bool selected) const
 	else
 		DrawingClr = RectGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, 1);
+	pWind->SetPen(DrawingClr, 5);
 	drawstyle style;
 	if (RectGfxInfo.isFilled)
 	{
@@ -292,7 +282,7 @@ void Output::DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo, bool selected) 
 	else
 		DrawingClr = RectGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, 1);
+	pWind->SetPen(DrawingClr, 5);
 	drawstyle style;
 	if (RectGfxInfo.isFilled)
 	{
@@ -315,7 +305,7 @@ void Output::DrawHexa(Point P1, GfxInfo RectGfxInfo, bool selected) const
 	else
 		DrawingClr = RectGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, 1);
+	pWind->SetPen(DrawingClr,5 );
 	drawstyle style;
 	if (RectGfxInfo.isFilled)
 	{
@@ -345,21 +335,29 @@ void Output::DrawHexa(Point P1, GfxInfo RectGfxInfo, bool selected) const
 
 }
 
-void Output::reset()
-{
-	UI.DrawColor = BLUE;	//Drawing color
-	UI.FillColor = GREEN;	//Filling color
-	UI.MsgColor = RED;		//Messages color
-	UI.BkGrndColor = LIGHTGOLDENRODYELLOW;	//Background color
-	UI.HighlightColor = MAGENTA;	//This color should NOT be used to draw figures. use if for highlight only
-	UI.StatusBarColor = TURQUOISE;
-	UI.PenWidth = 3;
-}
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 Output::~Output()
 {
 	delete pWind;
+}
+
+void Output::reset()
+{
+	UI.DrawColor = BLUE;
+	UI.FillColor = GREEN;
+	UI.MsgColor = RED;
+	UI.HighlightColor = MAGENTA;
+	UI.StatusBarColor = TURQUOISE;
+	UI.PenWidth = 5;
+}
+void Output::setCrntDrawColor(color draw) {
+	UI.DrawColor = draw;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void Output::setCrntFillColor(color draw) {
+	UI.FillColor = draw;
 }
 

@@ -21,7 +21,7 @@ void LoadAction::ReadActionParameters() {
 	out->PrintMessage("Figures have been Loaded from " + filename);
 }
 
-void LoadAction::Execute() {
+void LoadAction::Execute(bool mode) {
 	ReadActionParameters();
 	ifstream fin;
 	fin.open(filename);

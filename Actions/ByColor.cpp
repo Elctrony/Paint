@@ -10,37 +10,40 @@ ByColor::ByColor(ApplicationManager* pApp) :Action(pApp)
 
 void ByColor::ReadActionParameters()
 {
-	Output* pOut = pManager->GetOutput();
-	Input* pIn = pManager->GetInput();
-	RightAns=0;
-	WrongAns=0;
-	tobepicked=0;
-	pickedno=0;
+	RightAns = 0;   //initializing all parameters
+	WrongAns = 0;
+	tobepicked = 0;
+	sound = pManager->getsound();
+
 }
-void ByColor::Execute()
+void ByColor::Execute(bool mode)
 {
 	ReadActionParameters();
-	pManager->unhideall();    //in case we want to restart
-	pManager->UpdateInterface();
 	Output* pOut = pManager->GetOutput();
 	Input* pIn = pManager->GetInput();
-	if (pManager->cancolor())  //checking that there are multiple color to play
+
+	if (pManager->CanPlay())  //checking that there are colored figures
 	{
-		CFigure* rand = pManager->getrandfig();    //choosing random figure
+		CFigure* rand = pManager->getrandcolorfig();    //choosing a random figure
 		tobepicked = pManager->getcolorno(rand);    //getting number of figures with the same color as the random figure
-		if(rand->getfillcolor()==YELLOW)
-			pOut->PrintMessage("Pick all Yellow figures");
+		string s;
+
+		//getting random figure color
+		if (rand->getfillcolor() == YELLOW)
+			s = "Pick all Yellow figures";
 		else if (rand->getfillcolor() == BLACK)
-			pOut->PrintMessage("Pick all Black figures");
+			s = "Pick all Black figures";
 		else if (rand->getfillcolor() == BLUE)
-			pOut->PrintMessage("Pick all Blue figures");
+			s = "Pick all Blue figures";
 		else if (rand->getfillcolor() == ORANGE)
-			pOut->PrintMessage("Pick all Orange figures");
+			s = "Pick all Orange figures";
 		else if (rand->getfillcolor() == RED)
-			pOut->PrintMessage("Pick all Red figures");
-		else 
-			pOut->PrintMessage("Pick all Green figures");
-		while (pickedno != tobepicked)    //kid keep picking till all right figures are picked
+			s = "Pick all Red figures";
+		else
+			s = "Pick all Green figures";
+		pOut->PrintMessage(s);
+
+		while (RightAns != tobepicked)    //kid keep picking till all right figures are picked
 		{
 			pIn->GetPointClicked(P.x, P.y);
 			if (P.y > UI.ToolBarHeight)
@@ -51,35 +54,41 @@ void ByColor::Execute()
 					picked->SetHidden(true);  //hiding the figure
 					pOut->ClearDrawArea();
 					pManager->UpdateInterface();
-					if (picked->getfillcolor()==rand->getfillcolor()&&picked->isFilled())  //checking if it match the chosen figure
+					if (picked->getfillcolor() == rand->getfillcolor() && picked->isFilled())  //checking if it match the chosen figure
 					{
-						pickedno++;
-						print(1);
+						if (sound)
+							PlaySound(TEXT("sounds\\goodjob.wav"), NULL, SND_ASYNC);
+						RightAns++;
+						pOut->PrintMessage(" YAY! your right answers = " + to_string(RightAns) + " wrong answers = " + to_string(WrongAns));
 					}
 					else
 					{
-						print(0);
+						WrongAns++;
+						pOut->PrintMessage("OPS your right answers = " + to_string(RightAns) + " wrong answers = " + to_string(WrongAns));
 					}
 				}
 			}
 			else if (P.x < UI.MenuItemWidth * 2 && P.x>UI.MenuItemWidth * 1)  //restarting the game
 			{
-				Execute();
+				pManager->unhideall();
+				pManager->UpdateInterface();
+				RightAns = 0;
+				WrongAns = 0;
+				pOut->PrintMessage(s);
 			}
 			else if (P.x < UI.MenuItemWidth * 4 && P.x>UI.MenuItemWidth * 3)  //going back to draw mode
 			{
 				ActionType pAct = TO_DRAW;
-				pickedno = -1;
+				RightAns = -1;
 				pManager->ExecuteAction(pAct);
 				break;
 			}
 			else
 			{
-				pickedno = tobepicked;  //clicking any other space end the game
-
+				break;
 			}
 		}
-		if (pickedno != -1) 
+		if (RightAns != -1)
 		{
 			pOut->PrintMessage("Game Over your right answers = " + to_string(RightAns) + " wrong answers = " + to_string(WrongAns));
 			pManager->unhideall();
@@ -87,26 +96,6 @@ void ByColor::Execute()
 		}
 	}
 	else
-	{
-		pOut->PrintMessage("you need to have more than one color to play");
-
-	}
+		pOut->PrintMessage("Color first to play");
 }
 
-void ByColor::print(bool b)
-{
-	Output* pOut = pManager->GetOutput();
-
-	if (b)  //right answer
-	{
-		RightAns++;
-		pOut->PrintMessage(" YAY! your right answers = " + to_string(RightAns) + " wrong answers = " + to_string(WrongAns));
-
-	}
-	else  
-	{
-		WrongAns++;
-		pOut->PrintMessage("OPS your right answers = " + to_string(RightAns) + " wrong answers = " + to_string(WrongAns));
-	}
-
-}

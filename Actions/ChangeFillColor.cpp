@@ -13,36 +13,66 @@ void ChangeFillColor::ReadActionParameters()
 	Output* pOut = pManager->GetOutput();
 	Input* pIn = pManager->GetInput();
 	pOut->PrintMessage("Select a filling color");
+	 ActType = pManager->GetUserAction();
+	pOut->ClearStatusBar();
 }
-void ChangeFillColor::Execute()
+void ChangeFillColor::Execute(bool mode)
 {
+	if(!mode)
 	ReadActionParameters();
+	if (mode)
+		pManager->setlastaction(this);
 	Output* pOut = pManager->GetOutput();
 
-	CFigure* FIG = pManager->GetSelectedFig();
-	pOut->ClearStatusBar();
-	
-	if (FIG != NULL)
+	 FIG = pManager->GetSelectedFig();  //getting selected figure
+	 
+	if (FIG != NULL) //if there is a selected figure
 	{
-		if (!FIG->isFilled())
-		{
-			ActionType ActType = pManager->GetUserAction();
-			if (pManager->ccolor(ActType, UI.FillColor))
-			{
-				FIG->ChngFillClr(UI.FillColor);
-				FIG->SetFill(true);
-				FIG->SetSelected(0);
-				pManager->SetSelectedFig(NULL);
-			}
+		isFilled = FIG->isFilled();
+		if (isFilled) {
+			lastColor = FIG->getfillcolor();
 		}
-		else
-		{
-			FIG->SetFill(false);
-			FIG->SetSelected(0);
-			pManager->SetSelectedFig(NULL);
-			pManager->UpdateInterface();
-		}
+		pOut->ClearStatusBar();
 
+		if (pManager->ChngColor(ActType, UI.FillColor))
+		{
+			FIG->ChngFillClr(UI.FillColor);   //changing fill color
+			FIG->SetFill(true);   //setting fill status with true
+			FIG->SetSelected(0);   //unselecting the figure
+			pManager->SetSelectedFig(NULL);
+		}
 	}
 
+
+}
+
+
+
+void ChangeFillColor::Undo() {
+	if (FIG == NULL) {
+		return;
+	}
+	if (isFilled) {
+		color temp = FIG->getfillcolor();
+		FIG->ChngFillClr(lastColor);
+		FIG->SetFill(true);
+		lastColor = temp;
+	}
+	else {
+		lastColor = FIG->getfillcolor();
+		FIG->SetFill(false);
+		pManager->UpdateInterface();
+	}
+}
+
+void ChangeFillColor::Redo()
+{
+	if (FIG == NULL) {
+		return;
+	}
+		color temp = FIG->getfillcolor();
+		FIG->ChngFillClr(lastColor);
+		FIG->SetFill(true);
+		lastColor = temp;
+	
 }

@@ -2,16 +2,15 @@
 #define ADD_SQR_ACTION_H
 
 #include "Action.h"
-#include"../ApplicationManager.h"
-#include"../Figures/CSquare.h"
-
+#include "../Figures/CSquare.h"
 //Add square Action class
 class AddSqrAction : public Action
 {
 private:
 	Point P1; //square center
 	GfxInfo SqrGfxInfo;
-	CSquare* figSqaure;
+	bool sound;
+	CSquare* figSquare;
 public:
 	AddSqrAction(ApplicationManager* pApp);
 
@@ -19,18 +18,10 @@ public:
 	virtual void ReadActionParameters();
 
 	//Add Square to the ApplicationManager
-	virtual void Execute();
+	virtual void Execute(bool mode=0);
 
-	virtual void Undo() {
-		cout << "Undo Add Square" << endl;
-		pManager->DeleteFigure(figSqaure);
-	}
-
-	virtual void Redo() {
-		cout << "REDO add Sqaure" << endl;
-		pManager->AddFigure(figSqaure);
-
-	}
+	virtual void Undo();
+	virtual void Redo();
 };
 
 #endif

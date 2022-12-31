@@ -1,3 +1,6 @@
+#ifndef UNDOACTION_H
+#define UNDOACTION_H
+
 #include"Action.h"
 #include "../ApplicationManager.h"
 class UndoAction : public Action {
@@ -8,9 +11,14 @@ public:
 	void ReadActionParameters() {
 		pManager->GetOutput()->PrintMessage("Undo Last Action");
 	}
-	void Execute() {
+	void Execute(bool mode=0) {
 		ReadActionParameters();
 		pManager->UndoLastAction();
+		pManager->GetLastAction()->Undo();
+
+		
 	}
+	
 };
-#pragma once
+#endif
+

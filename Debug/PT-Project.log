@@ -1,0 +1,7 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  ApplicationManager.cpp
+C:\Users\MM\Desktop\trial\ApplicationManager.cpp(519,17): warning C4101: 'fillIndex': unreferenced local variable
+C:\Users\MM\Desktop\trial\ApplicationManager.cpp(519,6): warning C4101: 'drawIndex': unreferenced local variable
+  ClearAll.cpp
+  Generating Code...
+  PT-Project.vcxproj -> C:\Users\MM\Desktop\trial\Debug\PT Project.exe

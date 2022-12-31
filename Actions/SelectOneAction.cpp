@@ -17,8 +17,10 @@ void SelectOneAction::ReadActionParameters()
 	pOut->ClearStatusBar();
 
 }
-void SelectOneAction::Execute()
+void SelectOneAction::Execute(bool mode)
 {
+	Output* pOut = pManager->GetOutput();
+	if(!mode)
 	ReadActionParameters();
 	CFigure* FIG=pManager->GetFigure(P1.x, P1.y);
 	if (FIG != NULL&&(FIG->IsSelected() == 0))
@@ -30,11 +32,21 @@ void SelectOneAction::Execute()
 		pManager->SetSelectedFig(FIG);
 
 		FIG->SetSelected(1);
+		FIG->PrintInfo(pOut);
 	}
 	else if (FIG != NULL && (FIG->IsSelected()==1)) //unselect figure
 	{
 		FIG->SetSelected(0);
 		pManager->SetSelectedFig(NULL);
+		Output* pOut = pManager->GetOutput();
+		pOut->ClearStatusBar();
+		
 	}
 
+}
+
+Action* SelectOneAction::recordaction()
+{
+	SelectOneAction* Test = new SelectOneAction(*this);
+	return Test;
 }

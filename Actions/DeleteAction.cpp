@@ -4,18 +4,39 @@
 #include "..\GUI\input.h"
 #include "..\GUI\Output.h"
 #include "..\Figures\CFigure.h"
-DeleteAction::DeleteAction(ApplicationManager* pApp) :Action(pApp)
+DeleteAction::DeleteAction(ApplicationManager* pApp,bool b) :Action(pApp),sound(b)
 {}
-void DeleteAction::Execute()
+void DeleteAction::Execute(bool mode)
 {
 	ReadActionParameters();
-	pManager->del();
-	pManager->UpdateInterface();
+	Fig=pManager->GetSelectedFig();
+	if (Fig != NULL) {
+
+		pManager->DeleteFigure(Fig);
+		pManager->SetSelectedFig(NULL);
+		Fig->SetSelected(false);
+		pManager->UpdateInterface();
+		if (sound)
+			PlaySound(TEXT("sounds\\delete.wav"), NULL, SND_ASYNC);
+	}
 }
+
 void DeleteAction::ReadActionParameters()
 {
 	Output* pOut = pManager->GetOutput();
-	Input* pIn = pManager->GetInput();
 	pOut->ClearDrawArea();
+	pOut->CreateStatusBar();
 	
+}
+
+void DeleteAction::Undo() {
+	if (Fig != NULL) {
+		pManager->AddFigure(Fig);
+	}
+	
+}
+void DeleteAction::Redo() {
+	if (Fig != NULL) {
+		pManager->DeleteFigure(Fig);
+	}
 }

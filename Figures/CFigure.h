@@ -4,17 +4,16 @@
 #include "..\defs.h"
 #include "..\GUI\Output.h"
 #include <iomanip>
-enum type { rectangle,circle,square,hexagon,triangle };
+enum type { rectangle, circle, square, hexagon, triangle };
 
 //Base class for all figures
 class CFigure
 {
 protected:
-	int ID=0;		//Each figure has an ID
+	int ID;		//Each figure has an ID
 	bool Selected;	//true if the figure is selected.
 	GfxInfo FigGfxInfo;	//Figure graphis info
 	bool Hidden;
-	
 	/// Add more parameters if needed.
 
 public:
@@ -27,23 +26,31 @@ public:
 	
 	void ChngDrawClr(color Dclr);	//changes the figure's drawing color
 	void ChngFillClr(color Fclr);	//changes the figure's filling color
-	bool isFilled();
-	void SetFill(bool b);
-	void SetHidden(bool b);
-	bool IsHidden();
-	color getfillcolor();
 
 	///The following functions should be supported by the figure class
 	///It should be overridden by each inherited figure
 
 	///Decide the parameters that you should pass to each function	
 	virtual bool Belong(int x1, int y1) = 0;
+
+
+	//virtual void Save(ofstream &OutFile) = 0;	//Save the figure parameters to the file
+	//virtual void Load(ifstream &Infile) = 0;	//Load the figure parameters to the file
+
+	virtual void PrintInfo(Output* pOut) = 0;//print all figure info on the status bar
+	virtual void Set_ID(int id)=0;	//set id of figure
+
+	virtual void shift(Point P)=0;
+	bool isFilled();
+	void SetFill(bool b);
+	void SetHidden(bool b);
+	bool IsHidden();
 	type gettype();
-
-
-
-	virtual void Save(ofstream &OutFile) = 0;	//Save the figure parameters to the file
-	virtual void Load(ifstream &Infile) = 0;	//Load the figure parameters to the file
+	color getfillcolor();
+	color getdrawcolo();
+	virtual Point GetCenter() = 0;
+	virtual void Save(ofstream& OutFile) = 0;	//Save the figure parameters to the file
+	virtual void Load(ifstream& Infile) = 0;	//Load the figure parameters to the file
 
 	//virtual void PrintInfo(Output* pOut) = 0;	//print all figure info on the status bar
 

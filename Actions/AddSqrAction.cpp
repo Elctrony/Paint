@@ -14,14 +14,21 @@ void AddSqrAction::ReadActionParameters()
 	//Get a Pointer to the Input / Output Interfaces
 	Output* pOut = pManager->GetOutput();
 	Input* pIn = pManager->GetInput();
+	sound = pManager->getsound();
 
 	pOut->PrintMessage("New Square: Click at center");
 
 	//Read center and store in point P1
-	pIn->GetPointClicked(P1.x, P1.y);
+	do
+	{
+		pIn->GetPointClicked(P1.x, P1.y);
+		if (P1.y-50<UI.ToolBarHeight|| P1.y + 50> UI.height - UI.StatusBarHeight)
+			pOut->PrintMessage("invalid point click again");
+
+	} while (P1.y-50 < UI.ToolBarHeight|| P1.y+50>UI.height-UI.StatusBarHeight);
 
 
-	SqrGfxInfo.isFilled = false;	//default is not filled
+	SqrGfxInfo.isFilled = pManager->getfillstatus();	//default is not filled
 	//get drawing, filling colors and pen width from the interface
 	SqrGfxInfo.DrawClr = pOut->getCrntDrawColor();
 	SqrGfxInfo.FillClr = pOut->getCrntFillColor();
@@ -31,14 +38,30 @@ void AddSqrAction::ReadActionParameters()
 }
 
 //Execute the action
-void AddSqrAction::Execute()
+void AddSqrAction::Execute(bool mode)
 {
+	if(!mode)
 	//This action needs to read some parameters first
 	ReadActionParameters();
+	if (mode)
+		pManager->setlastaction(this);
 
 	//Create a square with the parameters read from the user
-	figSqaure = new CSquare(P1, SqrGfxInfo);
+	figSquare = new CSquare(P1, SqrGfxInfo);
 
 	//Add the square to the list of figures
-	pManager->AddFigure(figSqaure);
+	pManager->AddFigure(figSquare);
+	if (sound)
+		PlaySound(TEXT("sounds\\square.wav"), NULL, SND_ASYNC);
+}
+
+
+
+
+void AddSqrAction::Undo() {
+	pManager->DeleteFigure(figSquare);
+}
+
+void AddSqrAction::Redo() {
+	pManager->AddFigure(figSquare);
 }

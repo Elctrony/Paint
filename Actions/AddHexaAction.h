@@ -3,13 +3,14 @@
 
 #include "Action.h"
 #include "../Figures/CHexagon.h"
-#include "../ApplicationManager.h"
+
 //Add Hexagon Action class
 class AddHexaAction : public Action
 {
 private:
 	Point P1; //Hexagon Center
 	GfxInfo HexaGfxInfo;
+	bool sound;
 	CHexagon* figHexagon;
 public:
 	AddHexaAction(ApplicationManager* pApp);
@@ -18,18 +19,10 @@ public:
 	virtual void ReadActionParameters();
 
 	//Add rectangle to the ApplicationManager
-	virtual void Execute();
+	virtual void Execute(bool mode=0);
+	virtual void Undo();
+	virtual void Redo();
 
-	virtual void Undo() {
-		cout << "Undo Add Hexagon" << endl;
-		pManager->DeleteFigure(figHexagon);
-	}
-
-	virtual void Redo() {
-		cout << "REDO add Hexagon" << endl;
-		pManager->AddFigure(figHexagon);
-
-	}
 };
 
 #endif

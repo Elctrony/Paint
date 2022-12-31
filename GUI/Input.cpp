@@ -12,6 +12,15 @@ void Input::GetPointClicked(int& x, int& y) const
 	pWind->WaitMouseClick(x, y);	//Wait for mouse click
 }
 
+bool Input::ButtonState(int& x, int& y) const //return if mouse is clicked
+{
+	buttonstate b=pWind->GetButtonState(LEFT_BUTTON,x,y);
+	if (b == BUTTON_UP)
+		return false;
+	else
+		return true;
+}
+
 string Input::GetSrting(Output* pO) const
 {
 	string Label;
@@ -78,10 +87,12 @@ ActionType Input::GetUserAction() const
 			case ITM_REDO: return REDO;
 			case ITM_SAVE: return TO_SAVE;
 			case ITM_MOVE: return MOVE;
+			case ITM_DRAG: return DRAG;
 			case ITM_REC: return STARTREC;
 			case ITM_STOP: return STOPREC;
 			case ITM_PLAYREC: return PLAYREC;
 			case ITM_DRAWCOLOR: return DRAWCOLOR;
+			case ITM_SOUND: return SOUND;
 			default: return EMPTY;	//A click on empty place in desgin toolbar
 			}
 		}

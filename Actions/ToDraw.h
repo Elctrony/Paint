@@ -6,8 +6,9 @@ class ToDraw :public Action
 public:
 	ToDraw(ApplicationManager* pApp);
 	virtual void ReadActionParameters();
-	virtual void Execute();
+	virtual void Execute(bool mode=0);
 
 };
 #endif 
+
 
